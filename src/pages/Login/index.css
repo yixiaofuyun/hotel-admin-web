@@ -1,0 +1,154 @@
+/* src/pages/Login/index.css - 全新深色毛玻璃风格 */
+
+/* 1. 外层容器：把渐变背景移到最外层，让它铺满整个屏幕 */
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* 🌟 核心改动：背景色统一放在这里 */
+  background: linear-gradient(135deg, #003a8c 0%, #1890ff 50%, #36cfc9 100%);
+}
+
+/* 2. 左侧区域：背景色去掉了，因为它现在是透明的，直接显示父容器的背景 */
+.login-left {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px;
+  color: white; /* 文字保持白色 */
+  z-index: 1; /* 保证文字在最上层 */
+}
+
+.login-left-title {
+  font-size: 48px; /* 稍微加大一点气势 */
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 加点文字阴影增加立体感 */
+}
+
+/* 3. 右侧区域：核心毛玻璃效果 */
+.login-right {
+  width: 500px; /* 稍微加宽一点 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* 🌟 核心改动：半透明深蓝+毛玻璃模糊滤镜 */
+  background-color: rgba(0, 35, 105, 0.3); /* 深蓝色的半透明遮罩 */
+  backdrop-filter: blur(20px); /* 🌟 磨砂玻璃的核心属性 */
+  -webkit-backdrop-filter: blur(20px); /* 兼容 Safari */
+  
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2); /* 更深的阴影，增加浮空感 */
+  border-left: 1px solid rgba(255, 255, 255, 0.1); /* 左侧加一道淡淡的光边 */
+  z-index: 2;
+}
+
+/* 4. 改造 Antd 卡片：必须完全透明 */
+.login-content-card {
+  width: 100%;
+  max-width: 420px;
+  background: transparent !important; /* 强制透明，否则会有白色底色 */
+}
+
+/* 5. 标题栏改造：适应深色背景，改成白色文字 */
+.login-form-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* 分隔线变浅色半透明 */
+  display: flex;
+}
+
+.login-form-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #ffffff; /* 🌟 文字改白色 */
+  padding-bottom: 12px;
+  border-bottom: 3px solid #ffffff; /* 🌟 下划线改白色 */
+  margin-bottom: -2px;
+  cursor: default;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   🌟 暴力覆盖 Ant Design 默认样式
+   为了让黑色文字在深色背景上变白，我们需要强制覆盖 antd 的样式
+========================================= */
+
+/* 覆盖表单 Label 的颜色 */
+.login-right .ant-form-item-label > label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 15px;
+}
+
+/* 覆盖单选框 (Radio) 文字颜色 */
+.login-right .ant-radio-wrapper {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 覆盖底部链接文字颜色 */
+.login-form-footer span {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+.login-form-footer a {
+    color: #fff !important;
+    text-decoration: underline; /* 加个下划线强调一下 */
+}
+
+/* =========================================
+   ✨ 修复：精准控制输入框样式，解决白框溢出问题
+========================================= */
+
+/* 1. 针对带图标的外层包裹器 (Input.Password 或带 prefix 的 Input) */
+.login-right .ant-input-affix-wrapper {
+    background-color: rgba(255, 255, 255, 0.9) !important; /* 🌟 背景色加在这里 */
+    border: none !important;
+    height: 48px; /* 稍微再加高一点点，更舒服 */
+    border-radius: 8px; /* 圆角 */
+    padding-top: 0; /* 确保文字垂直居中 */
+    padding-bottom: 0;
+    box-shadow: none !important; /* 去掉默认的聚焦蓝框，用下面的代替 */
+    transition: all 0.3s;
+}
+
+/* 2. 🌟 核心关键：把内部真正的 input 元素背景设为透明！ */
+.login-right .ant-input-affix-wrapper > input.ant-input {
+     background-color: transparent !important; /* 让它透明，显示外壳的颜色 */
+     height: 100%;
+     box-shadow: none !important; /* 去掉内部可能存在的阴影 */
+}
+
+/* 3. 针对普通没有图标的 Input (以防万一以后用到) */
+.login-right .ant-input:not(textarea):not(.ant-input-affix-wrapper > input.ant-input) {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: none;
+    height: 48px;
+    border-radius: 8px;
+    box-shadow: none !important;
+}
+
+/* 4. 自定义聚焦时的发光效果 (加在外壳上) */
+.login-right .ant-input-affix-wrapper:focus,
+.login-right .ant-input-affix-wrapper-focused,
+.login-right .ant-input:focus:not(textarea):not(.ant-input-affix-wrapper > input.ant-input) {
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.4) !important; /* 柔和的蓝光 */
+    background-color: #fff !important; /* 聚焦时让背景变成纯白，更亮 */
+}
+
+
+/* 大按钮样式优化 */
+.login-submit-button {
+    height: 48px !important; 
+    font-size: 18px !important; 
+    fontWeight: bold !important;
+    border-radius: 8px !important;
+    background: linear-gradient(90deg, #1890ff, #36cfc9) !important; /* 按钮也搞个渐变 */
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(24, 144, 255, 0.4);
+}
+.login-submit-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(24, 144, 255, 0.6);
+}
